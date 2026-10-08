@@ -9,9 +9,14 @@ def check_password(password, password_hash):
     return check_password_hash(password_hash, password)
 
 def get_connection():
-    connection = sqlite3.connect("resume.db")
-    # CHANGED: SQLite ignores foreign keys unless this is enabled per connection
-    connection.execute("PRAGMA foreign_keys = ON")
+    connection = sqlite3.connect(
+        "/app/database/resume.db"
+    )
+
+    connection.execute(
+        "PRAGMA foreign_keys = ON"
+    )
+
     return connection
 
 def create_table():
