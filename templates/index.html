@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Agent · رزومه‌ات را با دستیار هوشمند بساز{% endblock %}
+{% block container_class %}container--form{% endblock %}
+
+{% block content %}
+{% if user %}
+    <section class="hero">
+        <h1 class="page-title page-title--xl">خوش برگشتی، {{ user[1] }}</h1>
+        <p class="page-lead">ساخت رزومه‌ات را از همان‌جایی که مانده بود ادامه بده.</p>
+    </section>
+
+    <div class="actions actions--center">
+        <a class="btn btn--primary" href="/dashboard">برو به داشبورد</a>
+        <a class="btn btn--secondary" href="/resume/new">رزومه جدید</a>
+    </div>
+{% else %}
+    <section class="hero">
+        <h1 class="page-title page-title--xl">رزومه‌ات را با گفتگو بساز</h1>
+        <p class="page-lead">Resume Agent دستیاری است که با تو گفتگو می‌کند، اطلاعات رزومه‌ات را به‌مرور جمع می‌کند و در پایان یک رزومه مرتب آماده می‌کند.</p>
+    </section>
+
+    <section class="card" aria-labelledby="how-title">
+        <h2 class="section-title" id="how-title">چطور کار می‌کند؟</h2>
+        <ol class="steps">
+            <li>ثبت‌نام می‌کنی و یک رزومه جدید می‌سازی.</li>
+            <li>با دستیار گفتگو می‌کنی و درباره تحصیلات، مهارت‌ها و پروژه‌هایت می‌گویی.</li>
+            <li>وقتی اطلاعات کافی شد، رزومه نهایی را می‌بینی.</li>
+        </ol>
+    </section>
+
+    <div class="actions actions--center">
+        <a class="btn btn--primary" href="/register">ثبت‌نام</a>
+        <a class="btn btn--secondary" href="/login">ورود</a>
+    </div>
+{% endif %}
+{% endblock %}

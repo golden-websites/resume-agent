@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}پیش‌نمایش رزومه · Resume Agent{% endblock %}
+{% block container_class %}container--preview{% endblock %}
+
+{% block content %}
+{% set personal = resume.personal %}
+
+<nav class="breadcrumb" aria-label="مسیر صفحه">
+    <ol>
+        <li><a href="/dashboard">داشبورد</a></li>
+        <li><a href="/resume/{{ resume_id }}">رزومه شماره {{ resume_id }}</a></li>
+        <li aria-current="page">پیش‌نمایش</li>
+    </ol>
+</nav>
+
+<article class="card resume-sheet">
+    <header class="resume-sheet__header">
+        <h1 class="page-title" dir="auto">{{ personal.name or "بدون نام" }}</h1>
+
+        <ul class="contact-list">
+            {% if personal.email %}<li><span>ایمیل</span> <bdi dir="ltr">{{ personal.email }}</bdi></li>{% endif %}
+            {% if personal.phone %}<li><span>تلفن</span> <bdi dir="ltr">{{ personal.phone }}</bdi></li>{% endif %}
+            {% if personal.location %}<li><span>محل</span> <bdi dir="auto">{{ personal.location }}</bdi></li>{% endif %}
+            {% set linkedin = personal.linkedin|safe_url %}
+            {% if linkedin %}<li><span>لینکدین</span> <a href="{{ linkedin }}" target="_blank" rel="noopener noreferrer" dir="ltr">{{ personal.linkedin }}</a></li>{% endif %}
+            {% set github = personal.github|safe_url %}
+            {% if github %}<li><span>گیت‌هاب</span> <a href="{{ github }}" target="_blank" rel="noopener noreferrer" dir="ltr">{{ personal.github }}</a></li>{% endif %}
+        </ul>
+    </header>
+
+    {% if resume.summary %}
+    <section class="resume-section">
+        <h2 class="resume-section__title">خلاصه</h2>
+        <p class="resume-content" dir="auto">{{ resume.summary }}</p>
+    </section>
+    {% endif %}
+
+    {% if resume.education %}
+    <section class="resume-section">
+        <h2 class="resume-section__title">تحصیلات</h2>
+        {% for item in resume.education %}
+            <div class="resume-entry">
+                {% if item.institution %}<h3 class="resume-entry__title" dir="auto">{{ item.institution }}</h3>{% endif %}
+                {% set degree_line = [item.degree, item.field]|select|join(' · ') %}
+                {% if degree_line %}<p dir="auto">{{ degree_line }}</p>{% endif %}
+                {% set dates = [item.start_date, item.end_date]|select|join(' – ') %}
+                {% if dates %}<p class="resume-entry__meta" dir="auto">{{ dates }}</p>{% endif %}
+                {% if item.description %}<p class="resume-content" dir="auto">{{ item.description }}</p>{% endif %}
+            </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if resume.experience %}
+    <section class="resume-section">
+        <h2 class="resume-section__title">تجربه کاری</h2>
+        {% for item in resume.experience %}
+            <div class="resume-entry">
+                {% if item.position %}<h3 class="resume-entry__title" dir="auto">{{ item.position }}</h3>{% endif %}
+                {% if item.company %}<p dir="auto">{{ item.company }}</p>{% endif %}
+                {% set dates = [item.start_date, item.end_date]|select|join(' – ') %}
+                {% if dates %}<p class="resume-entry__meta" dir="auto">{{ dates }}</p>{% endif %}
+                {% if item.description %}<p class="resume-content" dir="auto">{{ item.description }}</p>{% endif %}
+            </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if resume.skills %}
+    <section class="resume-section">
+        <h2 class="resume-section__title">مهارت‌ها</h2>
+        <ul class="tags">
+            {% for skill in resume.skills %}<li dir="auto">{{ skill }}</li>{% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    {% if resume.projects %}
+    <section class="resume-section">
+        <h2 class="resume-section__title">پروژه‌ها</h2>
+        {% for item in resume.projects %}
+            <div class="resume-entry">
+                {% if item.name %}<h3 class="resume-entry__title" dir="auto">{{ item.name }}</h3>{% endif %}
+                {% if item.description %}<p class="resume-content" dir="auto">{{ item.description }}</p>{% endif %}
+                {% if item.technologies %}
+                    <ul class="tags">
+                        {% for technology in item.technologies %}<li dir="auto">{{ technology }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+                {% set project_link = item.link|safe_url %}
+                {% if project_link %}<p><a href="{{ project_link }}" target="_blank" rel="noopener noreferrer">لینک پروژه</a></p>{% endif %}
+            </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if resume.certifications %}
+    <section class="resume-section">
+        <h2 class="resume-section__title">گواهینامه‌ها</h2>
+        {% for item in resume.certifications %}
+            <div class="resume-entry">
+                {% if item.name %}<h3 class="resume-entry__title" dir="auto">{{ item.name }}</h3>{% endif %}
+                {% set cert_line = [item.issuer, item.date]|select|join(' · ') %}
+                {% if cert_line %}<p dir="auto">{{ cert_line }}</p>{% endif %}
+                {% set cert_link = item.link|safe_url %}
+                {% if cert_link %}<p><a href="{{ cert_link }}" target="_blank" rel="noopener noreferrer">مشاهده گواهینامه</a></p>{% endif %}
+            </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if resume.languages %}
+    <section class="resume-section">
+        <h2 class="resume-section__title">زبان‌ها</h2>
+        <ul class="plain-list">
+            {% for item in resume.languages %}
+                <li dir="auto">{{ [item.language, item.level]|select|join(' – ') }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+</article>
+
+<div class="actions">
+    <a class="btn btn--primary" href="/resume/{{ resume_id }}/pdf">دانلود PDF</a>
+    <a class="btn btn--secondary" href="/resume/{{ resume_id }}/conversation">ادامه گفتگو</a>
+    <a class="btn btn--secondary" href="/resume/{{ resume_id }}">صفحه رزومه</a>
+    <a class="btn btn--secondary" href="/dashboard">بازگشت به داشبورد</a>
+</div>
+{% endblock %}

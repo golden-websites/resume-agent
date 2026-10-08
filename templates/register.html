@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}ثبت‌نام · Resume Agent{% endblock %}
+{% block container_class %}container--narrow{% endblock %}
+
+{% block content %}
+<section class="card">
+    <h1 class="page-title">ساخت حساب کاربری</h1>
+    <p class="page-lead">چند ثانیه وقت می‌گیرد.</p>
+
+    <form class="form" action="/register" method="POST" data-validate>
+        <div class="field">
+            <label for="username">نام کاربری</label>
+            <input class="input" id="username" type="text" name="username" dir="auto" autocomplete="username" required>
+            <p class="field-error" hidden></p>
+        </div>
+
+        <div class="field">
+            <label for="email">ایمیل</label>
+            <input class="input input--ltr" id="email" type="email" name="email" autocomplete="email" required>
+            <p class="field-error" hidden></p>
+        </div>
+
+        <div class="field">
+            <label for="password">رمز عبور</label>
+            <div class="input-group">
+                <input class="input input--ltr" id="password" type="password" name="password" autocomplete="new-password" required>
+                <button class="input-group__button" type="button" data-toggle-password="password" aria-pressed="false">نمایش</button>
+            </div>
+            <p class="field-error" hidden></p>
+        </div>
+
+        <button class="btn btn--primary btn--block" type="submit">ثبت‌نام</button>
+    </form>
+</section>
+
+<p class="auth-switch">قبلاً ثبت‌نام کرده‌ای؟ <a href="/login">وارد شو</a></p>
+{% endblock %}

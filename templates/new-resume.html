@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}رزومه جدید · Resume Agent{% endblock %}
+{% block container_class %}container--form{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <h1 class="page-title">ساخت رزومه</h1>
+    <p class="page-lead">اطلاعاتی که می‌خواهی در رزومه‌ات باشد را بنویس.</p>
+</header>
+
+<section class="card">
+    <form class="form" action="/resume/new" method="POST" data-validate>
+        <div class="field">
+            <label for="data">اطلاعات رزومه</label>
+            <textarea class="textarea" id="data" name="data" rows="10" dir="auto" required
+                placeholder="طراح وب"></textarea>
+            <p class="field-hint">مثلاً عنوان شغلی، مهارت‌ها و سوابق کاری.</p>
+            <p class="field-error" hidden></p>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn--primary" type="submit">ساخت رزومه</button>
+            <a class="btn btn--secondary" href="/dashboard">انصراف</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

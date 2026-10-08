@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}رزومه شماره {{ resume_id }} · Resume Agent{% endblock %}
+{% block container_class %}container--form{% endblock %}
+
+{% block content %}
+{% set personal = resume_data.personal %}
+
+<nav class="breadcrumb" aria-label="مسیر صفحه">
+    <ol>
+        <li><a href="/dashboard">داشبورد</a></li>
+        <li aria-current="page">رزومه شماره {{ resume_id }}</li>
+    </ol>
+</nav>
+
+<header class="page-header">
+    <h1 class="page-title">رزومه شماره {{ resume_id }}</h1>
+    {% if resume_ready %}<p class="page-lead"><span class="badge">آماده نهایی‌سازی</span></p>{% endif %}
+</header>
+
+<section class="card" aria-labelledby="resume-content-title">
+    <h2 class="section-title" id="resume-content-title">اطلاعات رزومه</h2>
+
+    <dl class="info-list">
+        <div>
+            <dt>نام</dt>
+            <dd dir="auto">{{ personal.name or "هنوز ثبت نشده" }}</dd>
+        </div>
+        {% if resume_data.summary %}
+        <div>
+            <dt>توضیح / خلاصه</dt>
+            <dd class="resume-content" dir="auto">{{ resume_data.summary }}</dd>
+        </div>
+        {% endif %}
+        <div>
+            <dt>مهارت‌ها</dt>
+            <dd>
+                {% if resume_data.skills %}
+                    <ul class="tags">{% for skill in resume_data.skills %}<li dir="auto">{{ skill }}</li>{% endfor %}</ul>
+                {% else %}هنوز ثبت نشده{% endif %}
+            </dd>
+        </div>
+        <div>
+            <dt>تا اینجا جمع‌آوری شده</dt>
+            <dd>
+                {{ resume_data.education|length }} سابقه تحصیلی ·
+                {{ resume_data.projects|length }} پروژه ·
+                {{ resume_data.experience|length }} سابقه کاری
+            </dd>
+        </div>
+    </dl>
+</section>
+
+<div class="actions">
+    <a class="btn btn--primary" href="/resume/{{ resume_id }}/conversation">
+        {% if conversations %}ادامه گفتگو{% else %}شروع گفتگو{% endif %}
+    </a>
+    {% if conversations %}
+        <form class="inline-form" action="/resume/{{ resume_id }}/conversation/new" method="POST">
+            <button class="btn btn--secondary" type="submit">گفتگوی جدید</button>
+        </form>
+    {% endif %}
+    {% if resume_ready %}
+        <a class="btn btn--secondary" href="/resume/{{ resume_id }}/finalize">ساخت رزومه نهایی</a>
+        <a class="btn btn--secondary" href="/resume/{{ resume_id }}/pdf">دانلود PDF</a>
+    {% else %}
+        <span class="btn btn--secondary" aria-disabled="true" title="بعد از جمع‌آوری اطلاعات کافی فعال می‌شود">ساخت رزومه نهایی</span>
+    {% endif %}
+    <a class="btn btn--secondary" href="/dashboard">بازگشت به داشبورد</a>
+</div>
+
+{% if conversations %}
+<section class="card section-gap" aria-labelledby="resume-conversations-title">
+    <h2 class="section-title" id="resume-conversations-title">گفتگوهای این رزومه</h2>
+    <ul class="item-list">
+        {% for conversation in conversations %}
+            {% set conversation_title = "گفتگوی رزومه" if conversation[2] == "Resume Conversation" else conversation[2] %}
+            <li class="item">
+                <div class="item__body">
+                    <a class="item__title" href="/conversation/{{ conversation[0] }}" dir="auto">{{ conversation_title }} #{{ conversation[0] }}</a>
+                    <p class="item__meta">آخرین پیام: <span dir="ltr">{{ conversation[4]|datefmt }}</span></p>
+                </div>
+                <div class="item__actions">
+                    <a class="btn btn--secondary btn--sm" href="/conversation/{{ conversation[0] }}">ادامه</a>
+                    <form class="inline-form" action="/conversation/{{ conversation[0] }}/delete" method="POST"
+                          data-confirm="این گفتگو و همه پیام‌هایش حذف شود؟">
+                        <input type="hidden" name="next" value="resume">
+                        <button class="btn btn--danger-outline btn--sm" type="submit">حذف</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+<div class="actions">
+    <form class="inline-form" action="/resume/{{ resume_id }}/delete" method="POST"
+          data-confirm="این رزومه با همه گفتگوهایش حذف شود؟ این کار برگشت‌پذیر نیست.">
+        <button class="btn btn--danger-outline" type="submit">حذف رزومه</button>
+    </form>
+</div>
+{% endblock %}

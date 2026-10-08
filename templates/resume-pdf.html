@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>{{ resume.personal.name or "Resume" }}</title>
+<style>
+  /* Standalone on purpose: the PDF engine renders this file alone,
+     without the site layout or style.css. */
+  @font-face {
+    font-family: "ResumeFont";
+    src: local("Vazirmatn"), local("Vazir"), url("static/fonts/Vazirmatn-Regular.ttf");
+  }
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: #16213e;
+    font: 10.5pt/1.8 "ResumeFont", "Vazirmatn", "Vazir", "DejaVu Sans", Tahoma, sans-serif;
+  }
+  p { margin: 0; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  h1 { margin: 0; font-size: 22pt; line-height: 1.4; }
+  h2 {
+    margin: 0 0 6pt;
+    padding-bottom: 2pt;
+    color: #0a626b;
+    font-size: 12pt;
+    border-bottom: 0.75pt solid #dde3ee;
+  }
+  h3 { margin: 0; font-size: 10.5pt; }
+  header { padding-bottom: 8pt; border-bottom: 1.5pt solid #0e7c86; }
+  .contact { display: flex; flex-wrap: wrap; gap: 2pt 14pt; margin-top: 4pt; color: #5d6882; font-size: 9.5pt; }
+  .contact b { color: #16213e; }
+  section { margin-top: 14pt; }
+  .entry { margin-bottom: 8pt; break-inside: avoid; }
+  .meta { color: #5d6882; font-size: 9.5pt; }
+  .text { white-space: pre-wrap; }
+  .tags { display: flex; flex-wrap: wrap; gap: 4pt; }
+  .tags li { padding: 0 8pt; border: 0.75pt solid #dde3ee; border-radius: 10pt; font-size: 9.5pt; }
+  a { color: #0e7c86; text-decoration: none; }
+</style>
+</head>
+<body>
+{% set personal = resume.personal %}
+<header>
+  <h1 dir="auto">{{ personal.name or "بدون نام" }}</h1>
+  <div class="contact">
+    {% if personal.email %}<span><b>ایمیل</b> <bdi dir="ltr">{{ personal.email }}</bdi></span>{% endif %}
+    {% if personal.phone %}<span><b>تلفن</b> <bdi dir="ltr">{{ personal.phone }}</bdi></span>{% endif %}
+    {% if personal.location %}<span><b>محل</b> <bdi dir="auto">{{ personal.location }}</bdi></span>{% endif %}
+    {% set linkedin = personal.linkedin|safe_url %}
+    {% if linkedin %}<span><b>لینکدین</b> <a href="{{ linkedin }}" dir="ltr">{{ personal.linkedin }}</a></span>{% endif %}
+    {% set github = personal.github|safe_url %}
+    {% if github %}<span><b>گیت‌هاب</b> <a href="{{ github }}" dir="ltr">{{ personal.github }}</a></span>{% endif %}
+  </div>
+</header>
+
+{% if resume.summary %}
+<section><h2>خلاصه</h2><p class="text" dir="auto">{{ resume.summary }}</p></section>
+{% endif %}
+
+{% if resume.education %}
+<section><h2>تحصیلات</h2>
+  {% for item in resume.education %}
+  <div class="entry">
+    {% if item.institution %}<h3 dir="auto">{{ item.institution }}</h3>{% endif %}
+    {% set line = [item.degree, item.field]|select|join(' · ') %}{% if line %}<p dir="auto">{{ line }}</p>{% endif %}
+    {% set dates = [item.start_date, item.end_date]|select|join(' – ') %}{% if dates %}<p class="meta" dir="auto">{{ dates }}</p>{% endif %}
+    {% if item.description %}<p class="text" dir="auto">{{ item.description }}</p>{% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if resume.experience %}
+<section><h2>تجربه کاری</h2>
+  {% for item in resume.experience %}
+  <div class="entry">
+    {% if item.position %}<h3 dir="auto">{{ item.position }}</h3>{% endif %}
+    {% if item.company %}<p dir="auto">{{ item.company }}</p>{% endif %}
+    {% set dates = [item.start_date, item.end_date]|select|join(' – ') %}{% if dates %}<p class="meta" dir="auto">{{ dates }}</p>{% endif %}
+    {% if item.description %}<p class="text" dir="auto">{{ item.description }}</p>{% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if resume.skills %}
+<section><h2>مهارت‌ها</h2>
+  <ul class="tags">{% for skill in resume.skills %}<li dir="auto">{{ skill }}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+
+{% if resume.projects %}
+<section><h2>پروژه‌ها</h2>
+  {% for item in resume.projects %}
+  <div class="entry">
+    {% if item.name %}<h3 dir="auto">{{ item.name }}</h3>{% endif %}
+    {% if item.description %}<p class="text" dir="auto">{{ item.description }}</p>{% endif %}
+    {% if item.technologies %}<ul class="tags">{% for t in item.technologies %}<li dir="auto">{{ t }}</li>{% endfor %}</ul>{% endif %}
+    {% set link = item.link|safe_url %}{% if link %}<p><a href="{{ link }}" dir="ltr">{{ item.link }}</a></p>{% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if resume.certifications %}
+<section><h2>گواهینامه‌ها</h2>
+  {% for item in resume.certifications %}
+  <div class="entry">
+    {% if item.name %}<h3 dir="auto">{{ item.name }}</h3>{% endif %}
+    {% set line = [item.issuer, item.date]|select|join(' · ') %}{% if line %}<p dir="auto">{{ line }}</p>{% endif %}
+    {% set link = item.link|safe_url %}{% if link %}<p><a href="{{ link }}" dir="ltr">{{ item.link }}</a></p>{% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if resume.languages %}
+<section><h2>زبان‌ها</h2>
+  <ul>{% for item in resume.languages %}<li dir="auto">{{ [item.language, item.level]|select|join(' – ') }}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+</body>
+</html>

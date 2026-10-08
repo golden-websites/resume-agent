@@ -1,0 +1,482 @@
+/* ==========================================================================
+   Resume Agent — stylesheet (Persian / RTL)
+   Sections: 1 Tokens · 2 Base · 3 Layout · 4 Header · 5 Typography
+             6 Buttons · 7 Cards · 8 Forms · 9 Alerts · 10 Lists
+             11 Breadcrumb · 12 Chat · 13 Utilities · 14 Responsive
+   Direction comes from <html dir="rtl">, so logical properties
+   (inline-start / inline-end) are used instead of left / right.
+   ========================================================================== */
+
+/* 1. Tokens ---------------------------------------------------------------- */
+:root {
+  --font: "Vazirmatn", "Vazir", "IRANSansX", Tahoma, "Segoe UI", system-ui, sans-serif;
+
+  --ink: #16213e;
+  --muted: #5d6882;
+  --surface: #ffffff;
+  --surface-2: #f5f7fb;
+  --background: #e9edf4;
+  --line: #dde3ee;
+
+  --accent: #0e7c86;
+  --accent-strong: #0a626b;
+  --accent-soft: #e0f2f3;
+  --on-accent: #ffffff;
+  --danger: #c0392b;
+  --danger-soft: #fdecea;
+  --focus: rgba(14, 124, 134, 0.35);
+
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow: 0 1px 2px rgba(22, 33, 62, 0.06), 0 10px 28px rgba(22, 33, 62, 0.07);
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8ecf5;
+    --muted: #9aa5bf;
+    --surface: #182036;
+    --surface-2: #1e2742;
+    --background: #0f1526;
+    --line: #2b3554;
+    --accent: #38b6c1;
+    --accent-strong: #5fcad3;
+    --accent-soft: #17323f;
+    --on-accent: #08242a;
+    --danger: #ff8a7a;
+    --danger-soft: #3a1f26;
+    --focus: rgba(56, 182, 193, 0.4);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* 2. Base ------------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  color: var(--ink);
+  font: 400 1rem/1.9 var(--font);
+  overflow-wrap: anywhere;
+}
+
+main { flex: 1; padding-block: var(--space-4) 3rem; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+/* 3. Layout ---------------------------------------------------------------- */
+.container {
+  width: min(100% - 2rem, var(--container-width, 58rem));
+  margin-inline: auto;
+}
+.container--form { --container-width: 40rem; }
+.container--narrow { --container-width: 27rem; }
+.container--chat { --container-width: 48rem; }
+.container--preview { --container-width: 50rem; }
+
+.grid-2 {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  align-items: start;
+}
+
+/* 4. Header ---------------------------------------------------------------- */
+.site-header { background: var(--surface); border-bottom: 1px solid var(--line); }
+
+.site-header__inner {
+  --container-width: 58rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: 3.75rem;
+  flex-wrap: wrap;
+  padding-block: 0.4rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink);
+  font-weight: 800;
+}
+.brand:hover { text-decoration: none; }
+.brand__icon { color: var(--accent); }
+
+.site-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; }
+
+.nav-link {
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  font-weight: 600;
+}
+.nav-link:hover { color: var(--ink); background: var(--surface-2); text-decoration: none; }
+.nav-link[aria-current="page"] { color: var(--accent-strong); background: var(--accent-soft); }
+.nav-link--quiet { font-weight: 400; }
+
+/* 5. Typography ------------------------------------------------------------ */
+h1, h2 { margin: 0; line-height: 1.5; font-weight: 800; }
+
+.page-header { margin-bottom: var(--space-3); }
+.page-title { font-size: 1.75rem; }
+.page-title--sm { font-size: 1.35rem; }
+.page-title--xl { font-size: 2.2rem; line-height: 1.4; }
+.page-lead { margin-top: 0.25rem; color: var(--muted); }
+.section-title { font-size: 1.1rem; }
+
+.hero { margin-block: var(--space-2) var(--space-3); text-align: center; }
+.hero .page-lead { max-width: 30rem; margin: 0.5rem auto 0; font-size: 1.05rem; }
+
+.auth-switch { margin-top: var(--space-2); text-align: center; color: var(--muted); }
+
+.resume-content { white-space: pre-wrap; margin-top: var(--space-1); }
+
+/* 6. Buttons --------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.4rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.btn:hover { text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+
+.btn--primary { background: var(--accent); color: var(--on-accent); }
+.btn--primary:hover { background: var(--accent-strong); }
+
+.btn--secondary { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+.btn--sm { padding: 0.25rem 1rem; font-size: 0.9rem; }
+.btn--block { width: 100%; }
+
+.btn[aria-busy="true"] { opacity: 0.6; cursor: progress; pointer-events: none; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: var(--space-3); }
+.form .actions { margin-top: 0; }
+
+/* 7. Cards ----------------------------------------------------------------- */
+.card {
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.card > .page-title + .page-lead { margin-bottom: var(--space-3); }
+
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+/* 8. Forms ----------------------------------------------------------------- */
+.form { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field label { font-size: 0.92rem; font-weight: 700; }
+.field-hint { color: var(--muted); font-size: 0.85rem; }
+.field-error { color: var(--danger); font-size: 0.85rem; font-weight: 600; }
+
+.input, .textarea {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  background: var(--surface-2);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.7;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+.input::placeholder, .textarea::placeholder { color: var(--muted); opacity: 0.8; }
+.input:hover, .textarea:hover { border-color: var(--accent); }
+.input:focus, .textarea:focus {
+  outline: none;
+  background: var(--surface);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--focus);
+}
+.input[aria-invalid="true"], .textarea[aria-invalid="true"] { border-color: var(--danger); }
+
+.input--ltr { direction: ltr; text-align: left; }
+.textarea { min-height: 8rem; resize: vertical; }
+
+/* Password field with a show/hide button on the right edge */
+.input-group { position: relative; }
+.input-group .input { padding-inline-end: 4.5rem; }
+.input-group__button {
+  position: absolute;
+  inset-block: 0.35rem;
+  inset-inline-start: 0.35rem;
+  padding-inline: 0.8rem;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.input-group__button:hover { color: var(--accent); background: var(--accent-soft); }
+
+/* 9. Alerts ---------------------------------------------------------------- */
+.alert {
+  padding: 0.75rem 1rem;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border-radius: var(--radius-md);
+}
+.alert--danger { background: var(--danger-soft); color: var(--danger); }
+
+/* 10. Lists ---------------------------------------------------------------- */
+.item-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.8rem 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.item:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+.item__body { flex: 1; min-width: 0; }
+.item__title { color: var(--ink); font-weight: 700; }
+.item__title:hover { text-decoration: none; }
+/* The whole row is clickable through its title link */
+.item__title::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+
+.item__text {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.item__chevron { color: var(--muted); font-size: 1.5rem; line-height: 1; }
+
+.empty-state {
+  padding: var(--space-3) var(--space-2);
+  text-align: center;
+  color: var(--muted);
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius-md);
+}
+
+/* 11. Breadcrumb ----------------------------------------------------------- */
+.breadcrumb { margin-bottom: var(--space-2); font-size: 0.9rem; color: var(--muted); }
+.breadcrumb ol { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.breadcrumb li + li::before { content: "\2039"; margin-inline-end: 0.4rem; }
+
+/* 12. Chat ----------------------------------------------------------------- */
+.chat { display: flex; flex-direction: column; gap: 0.75rem; padding-bottom: var(--space-3); }
+
+.message {
+  width: fit-content;
+  max-width: 85%;
+  padding: 0.6rem 1rem 0.7rem;
+  border-radius: 18px;
+}
+.message__author { font-size: 0.75rem; font-weight: 700; opacity: 0.75; }
+.message__text { white-space: pre-wrap; }
+
+/* In RTL, flex-start is the right edge: you on the right, assistant on the left */
+.message--user {
+  align-self: flex-start;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-start-start-radius: 6px;
+}
+.message--assistant {
+  align-self: flex-end;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-start-end-radius: 6px;
+}
+
+.composer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  padding: var(--space-2) 0;
+  background: var(--background);
+  border-top: 1px solid var(--line);
+}
+.composer .field { flex: 1; }
+.composer .textarea { min-height: 3rem; max-height: 12rem; resize: none; }
+.composer .btn { min-height: 3rem; }
+
+/* 13. Utilities ------------------------------------------------------------ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  inset-block-start: -4rem;
+  inset-inline-start: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--radius-md);
+  z-index: 10;
+}
+.skip-link:focus { inset-block-start: 0.5rem; }
+
+/* 14. Responsive ----------------------------------------------------------- */
+@media (max-width: 40rem) {
+  main { padding-block: var(--space-3) 2rem; }
+  .card { padding: var(--space-2); }
+  .page-title { font-size: 1.5rem; }
+  .page-title--xl { font-size: 1.75rem; }
+  .nav-link { padding-inline: 0.55rem; }
+  .message { max-width: 92%; }
+  .form .actions .btn, .actions .btn { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+
+/* ==========================================================================
+   15. Additions (backend completion): flash messages, danger buttons,
+       item actions, badges, resume detail + preview, ready box
+   ========================================================================== */
+
+/* Flash messages */
+.flash-stack { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: var(--space-2); }
+
+/* Buttons */
+.btn--danger-outline { background: transparent; color: var(--danger); border-color: var(--danger-soft); }
+.btn--danger-outline:hover { background: var(--danger-soft); border-color: var(--danger); }
+.btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+.actions--center { justify-content: center; }
+.inline-form { display: inline-flex; margin: 0; }
+
+/* Lists: row actions sit above the whole-row link overlay */
+.item__actions { position: relative; z-index: 1; display: flex; align-items: center; gap: 0.5rem; }
+.item__meta { color: var(--muted); font-size: 0.82rem; }
+.empty-state__action { margin-top: var(--space-1); }
+
+.badge {
+  display: inline-block;
+  margin-inline-start: 0.4rem;
+  padding: 0 0.6rem;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+/* Page header with actions on the side */
+.page-header--row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-1); }
+.header-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.section-gap { margin-top: var(--space-3); }
+
+/* Home steps */
+.steps { counter-reset: step; display: flex; flex-direction: column; gap: 0.75rem; margin-top: var(--space-2); }
+.steps li { counter-increment: step; display: flex; align-items: flex-start; gap: 0.75rem; }
+.steps li::before {
+  content: counter(step);
+  flex: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 800;
+  border-radius: 50%;
+}
+
+/* Resume detail */
+.info-list { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-2) 0 0; }
+.info-list dt { color: var(--muted); font-size: 0.85rem; font-weight: 700; }
+.info-list dd { margin: 0; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tags li {
+  padding: 0.1rem 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+/* Conversation: "resume is ready" box */
+.ready-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-lg);
+}
+.ready-box p { color: var(--muted); font-size: 0.92rem; }
+
+/* Resume preview */
+.resume-sheet { padding: var(--space-4); }
+.resume-sheet__header { padding-bottom: var(--space-2); border-bottom: 2px solid var(--accent); }
+.contact-list { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin-top: 0.5rem; color: var(--muted); font-size: 0.92rem; }
+.contact-list span { font-weight: 700; color: var(--ink); }
+.resume-section { margin-top: var(--space-3); }
+.resume-section__title { margin-bottom: var(--space-1); padding-bottom: 0.25rem; border-bottom: 1px solid var(--line); color: var(--accent-strong); font-size: 1.05rem; }
+.resume-entry { margin-bottom: var(--space-2); }
+.resume-entry__title { margin: 0; font-size: 1rem; font-weight: 800; }
+.resume-entry__meta { color: var(--muted); font-size: 0.88rem; }
+.plain-list { display: flex; flex-direction: column; gap: 0.25rem; }
+
+@media (max-width: 40rem) {
+  .item { flex-wrap: wrap; }
+  .item__actions { width: 100%; }
+  .resume-sheet { padding: var(--space-2); }
+  .ready-box .btn { width: 100%; }
+}

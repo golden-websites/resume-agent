@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}گفتگو · Resume Agent{% endblock %}
+{% block container_class %}container--chat{% endblock %}
+
+{% block content %}
+{% set conversation_title = "گفتگوی رزومه" if conversation[3] == "Resume Conversation" else conversation[3] %}
+
+<nav class="breadcrumb" aria-label="مسیر صفحه">
+    <ol>
+        <li><a href="/dashboard">داشبورد</a></li>
+        <li><a href="/resume/{{ conversation[2] }}">رزومه شماره {{ conversation[2] }}</a></li>
+        <li aria-current="page">گفتگو</li>
+    </ol>
+</nav>
+
+<header class="page-header page-header--row">
+    <h1 class="page-title page-title--sm" dir="auto">{{ conversation_title }} #{{ conversation[0] }}</h1>
+    <div class="header-actions">
+        <form class="inline-form" action="/resume/{{ conversation[2] }}/conversation/new" method="POST"
+              data-confirm="یک گفتگوی جدید برای این رزومه ساخته شود؟">
+            <button class="btn btn--secondary btn--sm" type="submit">گفتگوی جدید</button>
+        </form>
+        <form class="inline-form" action="/conversation/{{ conversation[0] }}/delete" method="POST"
+              data-confirm="این گفتگو و همه پیام‌هایش حذف شود؟">
+            <input type="hidden" name="next" value="resume">
+            <button class="btn btn--danger-outline btn--sm" type="submit">حذف گفتگو</button>
+        </form>
+    </div>
+</header>
+
+<ol class="chat" id="chat" aria-label="پیام‌های گفتگو">
+    {% for message in messages %}
+        {% if message[1] == "user" %}
+            <li class="message message--user">
+                <p class="message__author">شما</p>
+                <p class="message__text" dir="auto">{{ message[2] }}</p>
+            </li>
+        {% else %}
+            <li class="message message--assistant">
+                <p class="message__author">دستیار</p>
+                <p class="message__text" dir="auto">{{ message[2] }}</p>
+            </li>
+        {% endif %}
+    {% else %}
+        <li class="empty-state">هنوز پیامی نیست. اولین پیام را بنویس.</li>
+    {% endfor %}
+</ol>
+
+{% if resume_ready %}
+    <section class="ready-box" aria-labelledby="ready-title">
+        <div>
+            <h2 class="section-title" id="ready-title">رزومه‌ات آماده است</h2>
+            <p>اطلاعات اصلی رزومه جمع شد. می‌توانی رزومه نهایی را بسازی یا گفتگو را ادامه بدهی.</p>
+        </div>
+        <a class="btn btn--primary" href="/resume/{{ conversation[2] }}/finalize">ساخت رزومه نهایی</a>
+    </section>
+{% endif %}
+
+<form class="composer" action="/conversation/{{ conversation[0] }}/message" method="POST" data-validate>
+    <div class="field">
+        <label class="visually-hidden" for="content">پیام</label>
+        <textarea class="textarea" id="content" name="content" rows="1" dir="auto" required
+            placeholder="پیامت را بنویس..." data-autosize data-submit-shortcut></textarea>
+        <p class="field-error" hidden></p>
+    </div>
+    <button class="btn btn--primary" type="submit">ارسال</button>
+</form>
+{% endblock %}

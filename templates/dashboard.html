@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}داشبورد · Resume Agent{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <h1 class="page-title">سلام، {{ user[1] }}</h1>
+    <p class="page-lead">رزومه‌ها و گفتگوهایت اینجاست.</p>
+</header>
+
+<div class="grid-2">
+    <section class="card" id="resumes" aria-labelledby="resumes-title">
+        <div class="card__header">
+            <h2 class="section-title" id="resumes-title">رزومه‌های من</h2>
+            <a class="btn btn--primary btn--sm" href="/resume/new">رزومه جدید</a>
+        </div>
+
+        <ul class="item-list">
+            {% for resume in resumes %}
+                <li class="item">
+                    <div class="item__body">
+                        <a class="item__title" href="/resume/{{ resume.id }}">{{ resume.title }}</a>
+                        {% if resume.subtitle %}<p class="item__text" dir="auto">{{ resume.subtitle }}</p>{% endif %}
+                        <p class="item__meta">
+                            آخرین تغییر: <span dir="ltr">{{ resume.updated_at|datefmt }}</span>
+                            {% if resume.ready %}<span class="badge">آماده نهایی‌سازی</span>{% endif %}
+                        </p>
+                    </div>
+                    <div class="item__actions">
+                        <a class="btn btn--secondary btn--sm" href="/resume/{{ resume.id }}/conversation">ادامه</a>
+                        <form class="inline-form" action="/resume/{{ resume.id }}/delete" method="POST"
+                              data-confirm="این رزومه با همه گفتگوهایش حذف شود؟ این کار برگشت‌پذیر نیست.">
+                            <button class="btn btn--danger-outline btn--sm" type="submit">حذف</button>
+                        </form>
+                    </div>
+                </li>
+            {% else %}
+                <li class="empty-state">
+                    هنوز رزومه‌ای نساخته‌ای.
+                    <div class="empty-state__action"><a class="btn btn--primary btn--sm" href="/resume/new">اولین رزومه‌ات را بساز</a></div>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section class="card" id="conversations" aria-labelledby="conversations-title">
+        <div class="card__header">
+            <h2 class="section-title" id="conversations-title">گفتگوهای من</h2>
+        </div>
+
+        <ul class="item-list">
+            {% for conversation in conversations %}
+                {% set conversation_title = "گفتگوی رزومه" if conversation[2] == "Resume Conversation" else conversation[2] %}
+                <li class="item">
+                    <div class="item__body">
+                        <a class="item__title" href="/conversation/{{ conversation[0] }}" dir="auto">{{ conversation_title }}</a>
+                        <p class="item__text">مربوط به رزومه شماره {{ conversation[1] }}</p>
+                        <p class="item__meta">آخرین پیام: <span dir="ltr">{{ conversation[4]|datefmt }}</span></p>
+                    </div>
+                    <div class="item__actions">
+                        <a class="btn btn--secondary btn--sm" href="/conversation/{{ conversation[0] }}">ادامه</a>
+                        <form class="inline-form" action="/conversation/{{ conversation[0] }}/delete" method="POST"
+                              data-confirm="این گفتگو و همه پیام‌هایش حذف شود؟">
+                            <input type="hidden" name="next" value="dashboard">
+                            <button class="btn btn--danger-outline btn--sm" type="submit">حذف</button>
+                        </form>
+                    </div>
+                </li>
+            {% else %}
+                <li class="empty-state">هنوز گفتگویی نداری. از صفحه یک رزومه، گفتگو را شروع کن.</li>
+            {% endfor %}
+        </ul>
+    </section>
+</div>
+{% endblock %}

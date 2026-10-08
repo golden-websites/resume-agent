@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}ورود · Resume Agent{% endblock %}
+{% block container_class %}container--narrow{% endblock %}
+
+{% block content %}
+<section class="card">
+    <h1 class="page-title">ورود به حساب</h1>
+    <p class="page-lead">ایمیل و رمز عبورت را وارد کن.</p>
+
+    <form class="form" action="/login" method="POST" data-validate>
+        <div class="field">
+            <label for="email">ایمیل</label>
+            <input class="input input--ltr" id="email" type="email" name="email" autocomplete="email" required>
+            <p class="field-error" hidden></p>
+        </div>
+
+        <div class="field">
+            <label for="password">رمز عبور</label>
+            <div class="input-group">
+                <input class="input input--ltr" id="password" type="password" name="password" autocomplete="current-password" required>
+                <button class="input-group__button" type="button" data-toggle-password="password" aria-pressed="false">نمایش</button>
+            </div>
+            <p class="field-error" hidden></p>
+        </div>
+
+        <button class="btn btn--primary btn--block" type="submit">ورود</button>
+    </form>
+</section>
+
+<p class="auth-switch">حساب نداری؟ <a href="/register">ثبت‌نام کن</a></p>
+{% endblock %}
