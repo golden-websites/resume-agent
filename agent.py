@@ -1,12 +1,11 @@
 import json
-import os
 from openai import OpenAI
 
 # =========================================================
 # CLIENT
 # =========================================================
 
-api_key = os.getenv("ONE_XAI_API_KEY")
+api_key = "1xai-7CxbYPqJ7P6U_oqpXY1CXJ7xPCHDvN8am4n1KA1XcQM"
 
 if not api_key:
     raise RuntimeError(
